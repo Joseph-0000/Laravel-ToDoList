@@ -14,6 +14,7 @@ Route::view('/login','auth.login')->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-Route::post('/create-todo', [TodoController::class, 'store'])->name('create-todo');
 Route::get('/', [TodoController::class, 'index'])->name('dashboard');
+
+
+Route::resource('todos', TodoController::class);

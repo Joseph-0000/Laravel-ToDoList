@@ -56,15 +56,22 @@ class TodoController extends Controller
      */
     public function edit(Todo $todo)
     {
-        //
+        
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTodoRequest $request, Todo $todo)
+    public function update(Request $request, Todo $todo)
     {
-        //
+        $todos = $request->validate([
+            'title' => ['required', 'max:255'],
+            'description' => ['required', 'max:255'],
+            'completed' => ['required']
+        ]);
+        $todo->update($todos);
+
+        return redirect()->intended('/');
     }
 
     /**
