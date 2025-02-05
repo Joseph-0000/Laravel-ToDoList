@@ -15,7 +15,7 @@
         @guest
         @endguest
     </header>
-    <main>
+    <main class="container ">
         {{ $slot }}
     </main>
 </body>
