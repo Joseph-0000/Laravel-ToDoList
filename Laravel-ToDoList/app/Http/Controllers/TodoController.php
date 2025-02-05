@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
 use App\Models\Todo;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TodoController extends Controller
 {
@@ -13,7 +15,8 @@ class TodoController extends Controller
      */
     public function index()
     {
-        //
+        $todos = Auth::user()->todos()->latest()->paginate(10);
+        return view('users.dashboard', compact('todos'));
     }
 
     /**
@@ -27,9 +30,17 @@ class TodoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTodoRequest $request)
+    public function store(Request $request)
     {
-        //
+
+        $todo = $request->validate([
+            'title' => ['required', 'max:255'],
+            'description' => ['required', 'max:255']
+        ]);
+
+        Auth::user()->todos()->create($todo);
+
+        return redirect()->intended('/');
     }
 
     /**
@@ -45,15 +56,22 @@ class TodoController extends Controller
      */
     public function edit(Todo $todo)
     {
-        //
+        
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTodoRequest $request, Todo $todo)
+    public function update(Request $request, Todo $todo)
     {
-        //
+        $todos = $request->validate([
+            'title' => ['required', 'max:255'],
+            'description' => ['required', 'max:255'],
+            'completed' => ['required']
+        ]);
+        $todo->update($todos);
+
+        return redirect()->intended('/');
     }
 
     /**
