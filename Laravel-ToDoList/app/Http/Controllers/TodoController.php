@@ -15,7 +15,7 @@ class TodoController extends Controller
      */
     public function index()
     {
-        $todos = Todo::latest()->get();
+        $todos = Auth::user()->todos()->latest()->paginate(10);
         return view('users.dashboard', compact('todos'));
     }
 
